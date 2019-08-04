@@ -52,6 +52,9 @@ public class Brand extends Model<Brand> {
      * 商品分类ID
      */
     private Long productTypeId;
+    //表示这个属性不会对应数据库中的列
+    @TableField(exist = false)
+    private ProductType productType;
 
     @TableField("sortIndex")
     private Integer sortIndex;
@@ -140,6 +143,14 @@ public class Brand extends Model<Brand> {
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public ProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
     }
 
     @Override

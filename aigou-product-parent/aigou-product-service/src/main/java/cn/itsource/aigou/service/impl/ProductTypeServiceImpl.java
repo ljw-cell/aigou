@@ -3,8 +3,12 @@ package cn.itsource.aigou.service.impl;
 import cn.itsource.aigou.domain.ProductType;
 import cn.itsource.aigou.mapper.ProductTypeMapper;
 import cn.itsource.aigou.service.IProductTypeService;
+import cn.itsource.basic.util.AjaxResult;
+import cn.itsource.commom.client.RedisClient;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,12 +26,23 @@ import java.util.Map;
  */
 @Service
 public class ProductTypeServiceImpl extends ServiceImpl<ProductTypeMapper, ProductType> implements IProductTypeService {
-
+    //由于依赖的openfeign，会创建接口的动态代理对象交给spring管理
+    @Autowired
+    private RedisClient redisClient;
     @Override
     public List<ProductType> loadTypeTree() {
-        //递归方式实现
-        //return recursive(0L);
-        return loop();
+        //从redis中获取数据
+        AjaxResult result = redisClient.get("productTypes");
+        String productTypesJsonStr = (String) result.getRestObj();
+        List<ProductType> productTypes = JSON.parseArray(productTypesJsonStr, ProductType.class);
+        //判断是否有值
+        if(productTypes==null||productTypes.size()<=0){
+            //没有则查询数据库，并将数据缓存到redis中
+            productTypes = loop();
+            redisClient.set("productTypes",JSON.toJSONString(productTypes));
+        }
+        //返回数据
+        return productTypes;
     }
 
     /**
@@ -55,14 +70,6 @@ public class ProductTypeServiceImpl extends ServiceImpl<ProductTypeMapper, Produ
         return list;
     }
 
-    /**
-     * 递归方式实现加载类型树
-     * 缺点：
-     * （1）性能很低，要发送多次sql
-     * （2）递归的深度可能会导致栈溢出
-     *
-     * @return
-     */
     private List<ProductType> recursive(Long id) {
         //查询所有一级菜单
         List<ProductType> parents = baseMapper.selectList(new QueryWrapper<ProductType>().eq("pid", id));

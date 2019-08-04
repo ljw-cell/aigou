@@ -5,7 +5,7 @@ package cn.itsource.basic.util;
  */
 public class AjaxResult {
 
-    private boolean success;
+    private boolean success = true;
 
     private String message;
 

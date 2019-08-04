@@ -87,6 +87,7 @@ public class ProductTypeController {
     }
     /*Java在类型树
     * */
+    @RequestMapping(value = "/list",method = RequestMethod.POST)
     public List<ProductType> list(){
         return productTypeService.loadTypeTree();
     }

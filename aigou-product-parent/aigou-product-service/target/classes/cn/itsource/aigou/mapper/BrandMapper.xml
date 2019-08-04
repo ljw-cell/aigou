@@ -71,5 +71,4 @@
         LEFT JOIN t_product_type pt ON b.product_type_id = pt.id
         <include refid="whereSql"/>
     </select>
-
 </mapper>
