@@ -9,12 +9,12 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 商品
- * </p>
- *
- * @author awei
- * @since 2019-07-31
- */
+         * 商品
+         * </p>
+         *
+         * @author solargen
+        * @since 2019-08-04
+        */
 @TableName("t_product")
 public class Product extends Model<Product> {
 
@@ -48,8 +48,7 @@ public class Product extends Model<Product> {
     /**
      * 商品类型ID
      */
-    @TableField("productType")
-    private Long productType;
+    private Long productTypeId;
 
     /**
      * 上架时间
@@ -63,7 +62,6 @@ public class Product extends Model<Product> {
     @TableField("offSaleTime")
     private Long offSaleTime;
 
-    @TableField("brandId")
     private Long brandId;
 
     /**
@@ -107,12 +105,6 @@ public class Product extends Model<Product> {
     @TableField("commentScore")
     private Integer commentScore;
 
-    /**
-     * 显示属性摘要
-     */
-    @TableField("viewProperties")
-    private String viewProperties;
-
     @TableField("goodCommentCount")
     private Integer goodCommentCount;
 
@@ -121,6 +113,15 @@ public class Product extends Model<Product> {
 
     @TableField("badCommentCount")
     private Integer badCommentCount;
+
+    @TableField(exist = false)
+    private ProductType productType;
+
+    @TableField(exist = false)
+    private Brand brand;
+
+    @TableField(exist =  false)
+    private ProductExt productExt;
 
 
     public Long getId() {
@@ -171,12 +172,12 @@ public class Product extends Model<Product> {
         this.code = code;
     }
 
-    public Long getProductType() {
-        return productType;
+    public Long getProductTypeId() {
+        return productTypeId;
     }
 
-    public void setProductType(Long productType) {
-        this.productType = productType;
+    public void setProductTypeId(Long productTypeId) {
+        this.productTypeId = productTypeId;
     }
 
     public Long getOnSaleTime() {
@@ -259,14 +260,6 @@ public class Product extends Model<Product> {
         this.commentScore = commentScore;
     }
 
-    public String getViewProperties() {
-        return viewProperties;
-    }
-
-    public void setViewProperties(String viewProperties) {
-        this.viewProperties = viewProperties;
-    }
-
     public Integer getGoodCommentCount() {
         return goodCommentCount;
     }
@@ -299,27 +292,50 @@ public class Product extends Model<Product> {
     @Override
     public String toString() {
         return "Product{" +
-        "id=" + id +
-        ", createTime=" + createTime +
-        ", updateTime=" + updateTime +
-        ", name=" + name +
-        ", subName=" + subName +
-        ", code=" + code +
-        ", productType=" + productType +
-        ", onSaleTime=" + onSaleTime +
-        ", offSaleTime=" + offSaleTime +
-        ", brandId=" + brandId +
-        ", state=" + state +
-        ", maxPrice=" + maxPrice +
-        ", minPrice=" + minPrice +
-        ", saleCount=" + saleCount +
-        ", viewCount=" + viewCount +
-        ", commentCount=" + commentCount +
-        ", commentScore=" + commentScore +
-        ", viewProperties=" + viewProperties +
-        ", goodCommentCount=" + goodCommentCount +
-        ", commonCommentCount=" + commonCommentCount +
-        ", badCommentCount=" + badCommentCount +
-        "}";
+                "id=" + id +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", name=" + name +
+                ", subName=" + subName +
+                ", code=" + code +
+                ", productTypeId=" + productTypeId +
+                ", onSaleTime=" + onSaleTime +
+                ", offSaleTime=" + offSaleTime +
+                ", brandId=" + brandId +
+                ", state=" + state +
+                ", maxPrice=" + maxPrice +
+                ", minPrice=" + minPrice +
+                ", saleCount=" + saleCount +
+                ", viewCount=" + viewCount +
+                ", commentCount=" + commentCount +
+                ", commentScore=" + commentScore +
+                ", goodCommentCount=" + goodCommentCount +
+                ", commonCommentCount=" + commonCommentCount +
+                ", badCommentCount=" + badCommentCount +
+                "}";
+    }
+
+    public ProductType getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductType productType) {
+        this.productType = productType;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public ProductExt getProductExt() {
+        return productExt;
+    }
+
+    public void setProductExt(ProductExt productExt) {
+        this.productExt = productExt;
     }
 }
